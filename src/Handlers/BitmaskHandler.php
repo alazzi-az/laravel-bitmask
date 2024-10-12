@@ -9,25 +9,30 @@ use Alazziaz\LaravelBitmask\Validators\BitmaskValidator;
 final class BitmaskHandler implements Maskable
 {
     private BitmaskValidator $validator;
+
     public function __construct(
-        private int           $currentMask = 0,
+        private int $currentMask = 0,
         private readonly ?int $highestBit = null,
     ) {
         $this->validator = new BitmaskValidator($this->highestBit);
         $this->validator->validateMask($this->currentMask);
     }
+
     public static function create(int $currentMask = 0, ?int $highestBit = null): self
     {
         return new self($currentMask, $highestBit);
     }
+
     public function __toString(): string
     {
         return (string) $this->currentMask;
     }
-    public  function toString(): string
+
+    public function toString(): string
     {
-        return (new BitmaskReader())->convertToBinaryString($this->currentMask);
+        return (new BitmaskReader)->convertToBinaryString($this->currentMask);
     }
+
     public function getValue(): int
     {
         return $this->currentMask;
@@ -41,7 +46,6 @@ final class BitmaskHandler implements Maskable
         }
     }
 
-
     public function delete(int ...$bitValues): void
     {
         foreach ($bitValues as $bitValue) {
@@ -50,6 +54,7 @@ final class BitmaskHandler implements Maskable
             }
         }
     }
+
     public function has(int ...$bitValues): bool
     {
         $this->validateBitValues($bitValues);
@@ -58,9 +63,9 @@ final class BitmaskHandler implements Maskable
                 return false;
             }
         }
+
         return true;
     }
-
 
     private function validateBitValues(array $bitValues): void
     {
@@ -68,5 +73,4 @@ final class BitmaskHandler implements Maskable
             $this->validator->validateBit($bitValue);
         }
     }
-
 }

@@ -12,12 +12,14 @@ class BitmaskConverter
         if ($index < 0) {
             throw new OutOfRangeException("Index cannot be negative: {$index}");
         }
+
         return 1 << $index;
     }
 
     public function bitMaskToIndex(int $mask): int
     {
-        (new BitmaskValidator())->ensureSingleBitIsSet($mask);
-        return (new BitmaskReader())->getMostSignificantBitIndex($mask);
+        (new BitmaskValidator)->ensureSingleBitIsSet($mask);
+
+        return (new BitmaskReader)->getMostSignificantBitIndex($mask);
     }
 }

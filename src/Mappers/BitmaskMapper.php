@@ -2,11 +2,9 @@
 
 namespace Alazziaz\LaravelBitmask\Mappers;
 
-
 use Alazziaz\LaravelBitmask\Util\BitmaskConverter;
 use InvalidArgumentException;
 use UnitEnum;
-
 
 class BitmaskMapper
 {
@@ -16,7 +14,7 @@ class BitmaskMapper
     public function __construct(string $enum)
     {
         foreach ($enum::cases() as $index => $case) {
-            $this->flagMappings[$case->name] = (new BitmaskConverter())->indexToBitMask($index);
+            $this->flagMappings[$case->name] = (new BitmaskConverter)->indexToBitMask($index);
         }
     }
 

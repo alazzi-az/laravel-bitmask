@@ -21,7 +21,7 @@ class BitmaskReader
 
     public function getMostSignificantBitIndex(int $bitmask): int
     {
-        return (int)log($bitmask, 2);
+        return (int) log($bitmask, 2);
     }
 
     public function convertToBinaryString(int $bitmask): string

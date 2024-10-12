@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \Alazziaz\LaravelBitmask\LaravelBitmask
+ *
  * @method static BitmaskReader reader() Get the BitmaskReader instance.
  * @method static BitmaskValidator validator() Get the BitmaskValidator instance.
  * @method static BitmaskConverter converter() Get the BitmaskConverter instance.

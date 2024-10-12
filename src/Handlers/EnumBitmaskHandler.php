@@ -11,16 +11,13 @@ use UnitEnum;
 
 final readonly class EnumBitmaskHandler implements Maskable
 {
-
-
     public function __construct(
         /** @var UnitEnum */
-        private string        $enum,
-        private Maskable      $maskHandler,
+        private string $enum,
+        private Maskable $maskHandler,
         private BitmaskMapper $maskMapper
 
-    )
-    {
+    ) {
 
         EnumValidator::validate($this->enum);
     }
@@ -31,16 +28,17 @@ final readonly class EnumBitmaskHandler implements Maskable
     }
 
     /**
-     * @param class-string<UnitEnum> $enum
+     * @param  class-string<UnitEnum>  $enum
      */
     public static function create(string $enum, UnitEnum ...$bits): self
     {
-        $currentMask = array_reduce($bits, fn($mask, $bit) => $mask | $bit->value, 0);
+        $currentMask = array_reduce($bits, fn ($mask, $bit) => $mask | $bit->value, 0);
+
         return self::createWithMaskInternal($enum, $currentMask);
     }
 
     /**
-     * @param class-string<UnitEnum> $enum
+     * @param  class-string<UnitEnum>  $enum
      */
     private static function createWithMaskInternal(string $enum, int $mask): self
     {
@@ -52,7 +50,7 @@ final readonly class EnumBitmaskHandler implements Maskable
     }
 
     /**
-     * @param class-string<UnitEnum> $enum
+     * @param  class-string<UnitEnum>  $enum
      */
     public static function createWithMask(string $enum, int $mask): self
     {
@@ -74,11 +72,11 @@ final readonly class EnumBitmaskHandler implements Maskable
 
     private function enumToInt(UnitEnum ...$bits): array
     {
-        return array_map(fn(UnitEnum $bit) => $this->maskMapper->getBitMask($bit->name), $bits);
+        return array_map(fn (UnitEnum $bit) => $this->maskMapper->getBitMask($bit->name), $bits);
     }
 
     /**
-     * @param class-string<UnitEnum> $enum
+     * @param  class-string<UnitEnum>  $enum
      */
     public static function all(string $enum): self
     {
@@ -103,7 +101,6 @@ final readonly class EnumBitmaskHandler implements Maskable
     {
         $result = [];
 
-
         foreach ($this->enum::cases() as $mask) {
             if ($mask instanceof UnitEnum) {
                 $key = $mask instanceof MaskableEnum ? $mask->toMaskKey() : strtolower($mask->name);
@@ -120,5 +117,4 @@ final readonly class EnumBitmaskHandler implements Maskable
 
         return $this->maskHandler->has(...$this->enumToInt(...$bits));
     }
-
 }

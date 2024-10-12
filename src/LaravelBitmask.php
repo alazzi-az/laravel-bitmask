@@ -6,23 +6,25 @@ use Alazziaz\LaravelBitmask\Util\BitmaskConverter;
 use Alazziaz\LaravelBitmask\Util\BitmaskReader;
 use Alazziaz\LaravelBitmask\Validators\BitmaskValidator;
 
-class LaravelBitmask {
-    public function __construct(protected BitmaskReader $reader, protected BitmaskValidator $validator, protected BitmaskConverter $converter)
-    {
+class LaravelBitmask
+{
+    public function __construct(protected BitmaskReader $reader, protected BitmaskValidator $validator, protected BitmaskConverter $converter) {}
 
-    }
     public function reader(): BitmaskReader
     {
         return $this->reader;
     }
+
     public function validator(): BitmaskValidator
     {
         return $this->validator;
     }
+
     public function converter(): BitmaskConverter
     {
         return $this->converter;
     }
+
     public function getActiveBits(int $bitmask): array
     {
         return $this->reader->getActiveBits($bitmask);
@@ -57,7 +59,6 @@ class LaravelBitmask {
     {
         $this->validator->validateMask($mask);
     }
-
 
     public function isOnlyOneBitSet(int $mask): bool
     {

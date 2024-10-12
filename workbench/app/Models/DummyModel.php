@@ -10,10 +10,11 @@ use Workbench\App\Enums\Permissions;
 class DummyModel extends Model
 {
     protected $table = 'dummy_models';
+
     protected $fillable = ['permissions', 'flags'];
 
     protected $casts = [
-        'permissions' => EnumBitmaskCast::class . ':' . Permissions::class,
+        'permissions' => EnumBitmaskCast::class.':'.Permissions::class,
         'flags' => BitmaskCast::class,
     ];
 }
