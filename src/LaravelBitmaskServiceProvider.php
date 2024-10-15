@@ -33,7 +33,7 @@ class LaravelBitmaskServiceProvider extends PackageServiceProvider
             return new BitmaskConverter();
         });
 
-        $this->app->singleton('bitmask', function ($app) {
+        $this->app->bind('bitmask', function ($app) {
             return new Bitmask();
         });
     }

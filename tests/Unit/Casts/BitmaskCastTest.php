@@ -2,11 +2,12 @@
 
 use Alazziaz\LaravelBitmask\Casts\BitmaskCast;
 use Alazziaz\LaravelBitmask\Casts\EnumBitmaskCast;
-use Alazziaz\LaravelBitmask\Handlers\BitmaskHandler;
+use Alazziaz\Bitmask\Handlers\BitmaskHandler;
+use Alazziaz\LaravelBitmask\Facades\BitmaskFacade;
 use Workbench\App\Models\DummyModel;
 
 it('stores and retrieves bitmask values', function () {
-    $model = DummyModel::query()->create(['flags' => BitmaskHandler::create(5)]);
+    $model = DummyModel::query()->create(['flags' => BitmaskFacade::bitmaskHandler( 5)]);
 
     expect($model->flags)
         ->toBeInstanceOf(BitmaskHandler::class)
@@ -47,7 +48,7 @@ it('returns value from Maskable instance on set', function () {
     $cast = new BitmaskCast();
     $dummyModel = new DummyModel();
 
-    $maskable = BitmaskHandler::create(5);
+    $maskable = BitmaskFacade::bitmaskHandler( 5);
 
     $value = $cast->set($dummyModel, 'flags', $maskable, []);
     expect($value)->toBe(5);
@@ -55,6 +56,7 @@ it('returns value from Maskable instance on set', function () {
 
 it('returns integer directly on set if value is int', function () {
     $cast = new BitmaskCast();
+    $dummyModel = new DummyModel();
     $dummyModel = new DummyModel();
 
     $value = $cast->set($dummyModel, 'flags', 10, []);

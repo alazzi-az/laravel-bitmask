@@ -2,7 +2,7 @@
 
 namespace Workbench\App\Enums;
 
-use Alazziaz\LaravelBitmask\Contracts\MaskableEnum;
+use Alazziaz\Bitmask\Contracts\MaskableEnum;
 
 enum Permissions: int implements MaskableEnum
 {
