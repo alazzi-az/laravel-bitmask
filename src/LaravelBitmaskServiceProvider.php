@@ -2,8 +2,6 @@
 
 namespace Alazziaz\LaravelBitmask;
 
-
-
 use Alazziaz\Bitmask\Bitmask;
 use Alazziaz\Bitmask\Util\BitmaskConverter;
 use Alazziaz\Bitmask\Util\BitmaskReader;
@@ -19,23 +17,22 @@ class LaravelBitmaskServiceProvider extends PackageServiceProvider
         $package->name('laravel-bitmask');
     }
 
-    public function  registeringPackage(): void
+    public function registeringPackage(): void
     {
         $this->app->singleton('bitmask.reader', function () {
-            return new BitmaskReader();
+            return new BitmaskReader;
         });
 
         $this->app->singleton('bitmask.validator', function () {
-            return new BitmaskValidator();
+            return new BitmaskValidator;
         });
 
         $this->app->singleton('bitmask.converter', function () {
-            return new BitmaskConverter();
+            return new BitmaskConverter;
         });
 
         $this->app->bind('bitmask', function ($app) {
-            return new Bitmask();
+            return new Bitmask;
         });
     }
-
 }

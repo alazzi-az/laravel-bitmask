@@ -1,7 +1,7 @@
 <?php
 
-use Alazziaz\LaravelBitmask\Casts\EnumBitmaskCast;
 use Alazziaz\Bitmask\Handlers\EnumBitmaskHandler;
+use Alazziaz\LaravelBitmask\Casts\EnumBitmaskCast;
 use Alazziaz\LaravelBitmask\Facades\BitmaskFacade;
 use Workbench\App\Enums\Permissions;
 use Workbench\App\Models\DummyModel;

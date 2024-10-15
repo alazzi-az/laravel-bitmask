@@ -11,13 +11,7 @@ use InvalidArgumentException;
 
 class BitmaskCast implements CastsAttributes
 {
-
-
-    public function __construct(private readonly ?int $maxBit = null)
-    {
-
-    }
-
+    public function __construct(private readonly ?int $maxBit = null) {}
 
     public function get(Model $model, string $key, mixed $value, array $attributes): ?BitmaskHandler
     {
@@ -25,13 +19,12 @@ class BitmaskCast implements CastsAttributes
             return null;
         }
 
-        if (!is_int($value)) {
-            throw new InvalidArgumentException("BitmaskFacade value must be an integer.");
+        if (! is_int($value)) {
+            throw new InvalidArgumentException('BitmaskFacade value must be an integer.');
         }
 
         return BitmaskFacade::bitmaskHandler($value, $this->maxBit);
     }
-
 
     public function set(Model $model, string $key, mixed $value, array $attributes): ?int
     {
