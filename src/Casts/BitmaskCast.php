@@ -2,14 +2,15 @@
 
 namespace Alazziaz\LaravelBitmask\Casts;
 
-use Alazziaz\LaravelBitmask\Handlers\BitmaskHandler;
+use Alazziaz\Bitmask\Contracts\Maskable;
+use Alazziaz\Bitmask\Handlers\BitmaskHandler;
+use Alazziaz\LaravelBitmask\Facades\BitmaskFacade;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Alazziaz\LaravelBitmask\Contracts\Maskable;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
+
 class BitmaskCast implements CastsAttributes
 {
-
 
 
     public function __construct(private readonly ?int $maxBit = null)
@@ -25,10 +26,10 @@ class BitmaskCast implements CastsAttributes
         }
 
         if (!is_int($value)) {
-            throw new InvalidArgumentException("Bitmask value must be an integer.");
+            throw new InvalidArgumentException("BitmaskFacade value must be an integer.");
         }
 
-        return new BitmaskHandler($value, $this->maxBit);
+        return BitmaskFacade::bitmaskHandler($value, $this->maxBit);
     }
 
 

@@ -23,7 +23,7 @@ it('throws an exception for non-integer bitmask value on get', function () {
 
     $dummyModel = new DummyModel();
     expect(fn() => $cast->get($dummyModel, 'flags', 'invalid_value', []))
-        ->toThrow(InvalidArgumentException::class, "Bitmask value must be an integer.");
+        ->toThrow(InvalidArgumentException::class, "BitmaskFacade value must be an integer.");
 });
 
 it('returns null on get if value is null', function () {

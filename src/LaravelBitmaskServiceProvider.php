@@ -3,9 +3,11 @@
 namespace Alazziaz\LaravelBitmask;
 
 
-use Alazziaz\LaravelBitmask\Util\BitmaskConverter;
-use Alazziaz\LaravelBitmask\Util\BitmaskReader;
-use Alazziaz\LaravelBitmask\Validators\BitmaskValidator;
+
+use Alazziaz\Bitmask\Bitmask;
+use Alazziaz\Bitmask\Util\BitmaskConverter;
+use Alazziaz\Bitmask\Util\BitmaskReader;
+use Alazziaz\Bitmask\Validators\BitmaskValidator;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -32,11 +34,7 @@ class LaravelBitmaskServiceProvider extends PackageServiceProvider
         });
 
         $this->app->singleton('bitmask', function ($app) {
-            return new LaravelBitmask(
-                $app->make('bitmask.reader'),
-                $app->make('bitmask.validator'),
-                $app->make('bitmask.converter')
-            );
+            return new Bitmask();
         });
     }
 
