@@ -21,7 +21,7 @@ You can install the package via composer:
 composer require alazzi-az/laravel-bitmask
 ```
 
-## Usage
+## Usage:
 
 ### EnumBitmaskCast
 
