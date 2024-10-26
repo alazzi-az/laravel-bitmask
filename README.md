@@ -1,8 +1,8 @@
 # laravel package to work with bitmasking
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/alazzi-az/laravel-bitmask.svg?style=flat-square)](https://packagist.org/packages/alazzi-az/laravel-bitmask)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/alazzi-az/laravel-bitmask/run-tests?branch=main&label=tests)](https://github.com/alazzi-az/laravel-bitmask/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/alazzi-az/laravel-bitmask/fix-php-code-style-issues.yml?branch=main&label=code%20style)](https://github.com/alazzi-az/laravel-bitmask/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/alazzi-az/laravel-bitmask/run-tests.yml?branch=main&label=tests)](https://github.com/alazzi-az/laravel-bitmask/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/alazzi-az/laravel-bitmask/fix-php-code-style-issues.yml?branch=main&label=code%20style)](https://github.com/alazzi-az/laravel-bitmask/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/alazzi-az/laravel-bitmask.svg?style=flat-square)](https://packagist.org/packages/alazzi-az/laravel-bitmask)
 
 **Laravel Bitmask** is a powerful wrapper package for integrating the functionality of the [php-bitmask](https://github.com/alazzi-az/php-bitmask) library into Laravel applications. It leverages Laravel's service container and facades to provide an elegant and intuitive interface for reading, validating, and converting bitmasks. The package also simplifies casting bitmasks to and from enum values, enabling developers to efficiently apply bitmasking techniques while harnessing the full power of Laravel’s ecosystem.## Features
