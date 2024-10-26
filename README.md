@@ -1,7 +1,7 @@
 # laravel package to work with bitmasking
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/alazzi-az/laravel-bitmask.svg?style=flat-square)](https://packagist.org/packages/alazzi-az/laravel-bitmask)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/alazzi-az/laravel-bitmask/run-tests?label=tests)](https://github.com/alazzi-az/laravel-bitmask/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/alazzi-az/laravel-bitmask/run-tests?branch=main&label=tests)](https://github.com/alazzi-az/laravel-bitmask/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/alazzi-az/laravel-bitmask/fix-php-code-style-issues.yml?branch=main&label=code%20style)](https://github.com/alazzi-az/laravel-bitmask/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/alazzi-az/laravel-bitmask.svg?style=flat-square)](https://packagist.org/packages/alazzi-az/laravel-bitmask)
 

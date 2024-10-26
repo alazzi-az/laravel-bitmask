@@ -7,6 +7,7 @@ use Alazziaz\LaravelBitmask\Facades\BitmaskFacade;
 use Workbench\App\Models\DummyModel;
 
 it('stores and retrieves bitmask values', function () {
+
     $model = DummyModel::query()->create(['flags' => BitmaskFacade::bitmaskHandler(5)]);
 
     expect($model->flags)
