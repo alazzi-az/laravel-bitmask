@@ -29,18 +29,7 @@ use InvalidArgumentException;
  */
 trait HasBitmask
 {
-    /**
-     * Define the bitmask columns and their associated Enums (optional).
-     *
-     * Example:
-     * protected array $bitmaskColumns = [
-     *     'archive_data_flag' => ArchiveDataFlag::class,
-     *     'user_permissions_flag' => UserPermissionsFlag::class,
-     * ];
-     *
-     * @var array<string, string|null>
-     */
-    protected array $bitmaskColumns = [];
+
 
     /**
      * Scope a query to include records where a specific flag is set on a specified column.
@@ -57,7 +46,7 @@ trait HasBitmask
         $this->validateColumn($column);
         $bitmaskValue = $this->getFlagValue($column, $flag);
 
-        return $query->whereRaw("{$column} & ? = ?", [$bitmaskValue, $bitmaskValue]);
+        return $query->whereRaw("({$column} & ?) = ?", [$bitmaskValue, $bitmaskValue]);
     }
 
     /**
@@ -70,7 +59,7 @@ trait HasBitmask
      */
     protected function validateColumn(string $column): void
     {
-        if (!array_key_exists($column, $this->bitmaskColumns)) {
+        if (!array_key_exists($column, $this->getBitmaskColumns())) {
             throw new InvalidArgumentException("Column '{$column}' is not a defined bitmask column.");
         }
     }
@@ -88,7 +77,7 @@ trait HasBitmask
     {
         if ($flag instanceof BackedEnum) {
             // If the column has an associated Enum, ensure the flag belongs to it
-            $enumClass = $this->bitmaskColumns[$column] ?? null;
+            $enumClass = $this->getBitmaskColumns()[$column] ?? null;
             if ($enumClass && !($flag instanceof $enumClass)) {
                 throw new InvalidArgumentException("Flag does not match the Enum associated with column '{$column}'.");
             }

@@ -1,29 +1,157 @@
-# laravel package to work with bitmasking
+Certainly! Below is the **updated README** for your `laravel-bitmask` package, incorporating the renamed trait `HasBitmask` and ensuring all references and usage examples align with the latest changes. This updated documentation adheres to best practices, provides clear instructions, and showcases the enhanced functionality of your package.
+
+---
+
+# Laravel Bitmask
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/alazzi-az/laravel-bitmask.svg?style=flat-square)](https://packagist.org/packages/alazzi-az/laravel-bitmask)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/alazzi-az/laravel-bitmask/run-tests.yml?branch=main&label=tests)](https://github.com/alazzi-az/laravel-bitmask/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/alazzi-az/laravel-bitmask/fix-php-code-style-issues.yml?branch=main&label=code%20style)](https://github.com/alazzi-az/laravel-bitmask/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/alazzi-az/laravel-bitmask.svg?style=flat-square)](https://packagist.org/packages/alazzi-az/laravel-bitmask)
 
-**Laravel Bitmask** is a powerful wrapper package for integrating the functionality of the [php-bitmask](https://github.com/alazzi-az/php-bitmask) library into Laravel applications. It leverages Laravel's service container and facades to provide an elegant and intuitive interface for reading, validating, and converting bitmasks. The package also simplifies casting bitmasks to and from enum values, enabling developers to efficiently apply bitmasking techniques while harnessing the full power of Laravel’s ecosystem.## Features
+**Laravel Bitmask** is a powerful wrapper package for integrating the functionality of the [php-bitmask](https://github.com/alazzi-az/php-bitmask) library into Laravel applications. It leverages Laravel's service container and facades to provide an elegant and intuitive interface for reading, validating, and converting bitmasks. The package also simplifies casting bitmasks to and from enum values, enabling developers to efficiently apply bitmasking techniques while harnessing the full power of Laravel’s ecosystem.
+
+## Features
 
 - **Bitmask Reading**: Easily retrieve active bits from a given bitmask.
 - **Bitmask Validation**: Ensure that provided bits and masks are valid, including checks for single-bit settings.
 - **Bitmask Conversion**: Convert indices to bitmasks and vice versa, along with conversions to binary string representations.
 - **Casting for Masks and Enums**: Automatically handle the casting of bitmask values to and from enum types, providing a seamless experience when working with enumerated bitmasks.
 - **Integration with Laravel**: Utilizes Laravel's facade system for seamless integration and easy access.
+- **Eloquent Query Scopes**: Provides a trait with query scopes for performing bitmask operations directly within your Eloquent models.
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via Composer:
 
 ```bash
 composer require alazzi-az/laravel-bitmask
 ```
 
-## Usage:
+## Usage
 
-### EnumBitmaskCast
+### 1. HasBitmask Trait
+
+The `HasBitmask` trait provides Eloquent query scopes for performing bitmask operations on multiple columns within your models.
+
+#### Overview
+
+The `HasBitmask` trait allows you to:
+
+- **Check if a specific flag is set**.
+- **Check if any of a set of flags are set**.
+- **Check if all of a set of flags are set**.
+- **Check if specific flags are not set**.
+
+#### Integration
+
+To use the `HasBitmask` trait in your Laravel models, follow these steps:
+
+1. **Import and Use the Trait**
+
+   ```php
+   <?php
+
+   namespace App\Models;
+
+   use Illuminate\Database\Eloquent\Model;
+   use Alazziaz\LaravelBitmask\Traits\HasBitmask;
+   use App\Enums\ArchiveDataFlag;
+   use App\Enums\UserPermissionsFlag;
+
+   class Archive extends Model
+   {
+       use HasBitmask;
+
+       /**
+        * Define the bitmask columns and their associated Enums (optional).
+        *
+        * @var array<string, string|null>
+        */
+       protected array $bitmaskColumns = [
+           'archive_data_flag' => ArchiveDataFlag::class,
+           'user_permissions_flag' => UserPermissionsFlag::class,
+       ];
+   }
+   ```
+
+2. **Define Bitmask Columns**
+
+   In your model, define the `$bitmaskColumns` property as shown above. This property is an associative array where keys are the column names storing bitmask values, and values are the corresponding Enum classes. If no Enum is associated, you can set the value to `null`.
+
+#### Usage Examples
+
+Assuming you have an `Archive` model with `archive_data_flag` and `user_permissions_flag` columns, here are some usage examples:
+
+##### a. Querying for a Single Flag
+
+**Objective:** Retrieve all `Archive` records where the `HOTELS` flag is set in the `archive_data_flag` column.
+
+```php
+use App\Models\Archive;
+use App\Enums\ArchiveDataFlag;
+
+// Using Enum
+$archivesWithHotels = Archive::whereHasFlag('archive_data_flag', ArchiveDataFlag::HOTELS)->get();
+
+// Using integer
+$archivesWithHotels = Archive::whereHasFlag('archive_data_flag', 64)->get();
+```
+
+##### b. Querying for Multiple Flags (Any)
+
+**Objective:** Retrieve all `Archive` records where **any** of the specified flags (`HOTELS` or `CITIES`) are set in the `archive_data_flag` column.
+
+```php
+use App\Models\Archive;
+use App\Enums\ArchiveDataFlag;
+
+$archives = Archive::whereHasAnyFlags('archive_data_flag', [
+    ArchiveDataFlag::HOTELS,
+    ArchiveDataFlag::CITIES,
+])->get();
+```
+
+##### c. Querying for Multiple Flags (All)
+
+**Objective:** Retrieve all `Archive` records where **all** of the specified flags (`HOTELS` and `CITIES`) are set in the `archive_data_flag` column.
+
+```php
+use App\Models\Archive;
+use App\Enums\ArchiveDataFlag;
+
+$archivesWithBoth = Archive::whereHasAllFlags('archive_data_flag', [
+    ArchiveDataFlag::HOTELS,
+    ArchiveDataFlag::CITIES,
+])->get();
+```
+
+##### d. Querying Across Multiple Bitmask Columns
+
+**Objective:** Retrieve all `Archive` records where the `HOTELS` flag is set in `archive_data_flag` **and** the `ADMIN` flag is set in `user_permissions_flag`.
+
+```php
+use App\Models\Archive;
+use App\Enums\ArchiveDataFlag;
+use App\Enums\UserPermissionsFlag;
+
+$archives = Archive::whereHasFlag('archive_data_flag', ArchiveDataFlag::HOTELS)
+                   ->whereHasFlag('user_permissions_flag', UserPermissionsFlag::ADMIN)
+                   ->get();
+```
+
+##### e. Excluding Flags
+
+**Objective:** Retrieve all `Archive` records where the `HOTELS` flag is **not** set in the `archive_data_flag` column.
+
+```php
+use App\Models\Archive;
+use App\Enums\ArchiveDataFlag;
+
+$archivesWithoutHotels = Archive::whereHasNoFlag('archive_data_flag', ArchiveDataFlag::HOTELS)->get();
+```
+#### [For full enum example](./Docs/Example-Enums.md)
+### 2. EnumBitmaskCast
 
 #### Overview
 
@@ -39,22 +167,19 @@ use Alazziaz\LaravelBitmask\Casts\EnumBitmaskCast;
 class YourModel extends Model
 {
     protected $casts = [
-        'permissions' => EnumBitmaskCast::class . YourEnumClass::class
+        'permissions' => EnumBitmaskCast::class . ':App\Enums\YourEnumClass',
     ];
 }
 ```
-
 
 #### Example
 
 ```php
 $yourModel = YourModel::find(1);
-$permissions = $yourModel->permissions; // Returns an instance of EnumBitmaskHandler so we can use all availabilities as you see below
+$permissions = $yourModel->permissions; // Returns an instance of EnumBitmaskHandler
 ```
 
----
-
-### BitmaskCast
+### 3. BitmaskCast
 
 #### Overview
 
@@ -65,12 +190,12 @@ $permissions = $yourModel->permissions; // Returns an instance of EnumBitmaskHan
 To use `BitmaskCast` in your model, specify the cast in the `$casts` property:
 
 ```php
-use YourVendor\YourPackage\BitmaskCast;
+use Alazziaz\LaravelBitmask\Casts\BitmaskCast;
 
 class YourModel extends Model
 {
     protected $casts = [
-        'flags' => BitmaskCast::class . ':8' // Optional maxBit
+        'flags' => BitmaskCast::class . ':8', // Optional maxBit
     ];
 }
 ```
@@ -82,22 +207,12 @@ $yourModel = YourModel::find(1);
 $flags = $yourModel->flags; // Returns an instance of BitmaskHandler
 ```
 
----
-
-#### Conclusion
-
-You can now easily use `EnumBitmaskCast` and `BitmaskCast` in your Laravel models to handle bitmasking and enums efficiently. This allows for clearer and more maintainable code in your application.
-
-For further customization or features, feel free to explore the source code or contact support.
-
-
-
-### BitmaskHandler
+### 4. BitmaskHandler
 
 The `BitmaskHandler` class provides an interface for managing bitmask operations in a Laravel application. It allows for the manipulation of bitmasks through various methods, including adding, deleting, and checking for specific bits.
 
 ```php
-use \Alazziaz\LaravelBitmask\Facades\BitmaskFacade;
+use Alazziaz\LaravelBitmask\Facades\BitmaskFacade;
 
 // Create a BitmaskHandler instance with the combined permissions
 $permissions = 1 | 2 | 4;
@@ -126,11 +241,9 @@ $bitmaskHandler->delete(1);
 $hasBits = $bitmaskHandler->has(1, 2); 
 ```
 
-### EnumBitmaskHandler
+### 5. EnumBitmaskHandler
 
-The `EnumBitmaskHandler` class provides an interface for managing bitmask operations specific to enumerations in a
-Laravel application. It allows manipulation of bitmasks using enums, enabling you to add, delete, and check for specific
-bits represented by these enums.
+The `EnumBitmaskHandler` class provides an interface for managing bitmask operations specific to enumerations in a Laravel application. It allows manipulation of bitmasks using enums, enabling you to add, delete, and check for specific bits represented by these enums.
 
 ```php
 use Alazziaz\LaravelBitmask\Facades\BitmaskFacade;
@@ -140,42 +253,25 @@ enum YourEnum: int {
     case SECOND = 2;
     case THIRD = 4;
 }
-// Create an EnumBitmaskHandler with specific bits set
-$enumBitmaskHandler = BitmaskFacade::enumBitmaskHandler(YourEnum::class, YourEnum::BIT_ONE, YourEnum::BIT_TWO);
 
-       
-// Returns the current mask value (e.g., 0)
+// Create an EnumBitmaskHandler with specific bits set
+$enumBitmaskHandler = BitmaskFacade::enumBitmaskHandler(YourEnum::class, YourEnum::FIRST, YourEnum::SECOND);
+
+// Returns the current mask value (e.g., 3)
 $currentValue = $enumBitmaskHandler->getValue(); 
 
 // Add bits to the current mask
-$enumBitmaskHandler->add(YourEnum::BIT_THREE);
+$enumBitmaskHandler->add(YourEnum::THIRD);
 
 // Delete a bit from the current mask
-$enumBitmaskHandler->delete(YourEnum::BIT_ONE);
+$enumBitmaskHandler->delete(YourEnum::FIRST);
 
 // Check if specific bits are set in the current mask
-$hasBits = $enumBitmaskHandler->has(YourEnum::BIT_TWO, YourEnum::BIT_THREE);
+$hasBits = $enumBitmaskHandler->has(YourEnum::SECOND, YourEnum::THIRD);
 
 // Convert the current mask to an array representation
-$arrayRepresentation = $enumBitmaskHandler->toArray(); // e.g., ['bit_one' => false, 'bit_two' => true, 'bit_three' => true]
+$arrayRepresentation = $enumBitmaskHandler->toArray(); // e.g., ['first' => false, 'second' => true, 'third' => true]
 ```
-
-#### Methods Overview
-
-- **`remove(UnitEnum ...$bits): self`**
-    - Removes specified bits from the current instance.
-
-- **`add(UnitEnum ...$bits): self`**
-    - Adds specified bits to the current instance.
-
-- **`getValue(): int`**
-    - Returns the current mask value as an integer.
-
-- **`toArray(): array`**
-    - Returns an array representation of the current mask, indicating which bits are set.
-
-- **`has(UnitEnum ...$bits): bool`**
-    - Checks if the specified bits are set in the current mask.
 
 #### Example Usage
 
@@ -183,7 +279,7 @@ Here's an example that illustrates how to use the `EnumBitmaskHandler` class:
 
 ```php
 use Alazziaz\LaravelBitmask\Facades\BitmaskFacade;
-// Assuming you have an enum defined as:
+
 enum YourEnum: int {
     case BIT_ONE = 1;
     case BIT_TWO = 2;
@@ -192,7 +288,7 @@ enum YourEnum: int {
 
 // Creating an instance with no bits set
 $bitmaskHandler = BitmaskFacade::enumBitmaskHandlerFactory()
-->none(YourEnum::class);
+    ->none(YourEnum::class);
 
 // Adding bits
 $bitmaskHandler->add(YourEnum::BIT_ONE, YourEnum::BIT_TWO);
@@ -209,9 +305,7 @@ $arrayRepresentation = $bitmaskHandler->toArray(); // ['bit_one' => true, 'bit_t
 
 #### Note on `toArray` Method
 
-If you want to customize the keys in the resulting array from the `toArray` method, consider implementing
-the `Alazziaz\Bitmask\Contracts\MaskableEnum` interface for your enum. You can define a `toMaskKey` method to specify
-custom keys for each enum value. For example:
+If you want to customize the keys in the resulting array from the `toArray` method, consider implementing the `Alazziaz\LaravelBitmask\Contracts\MaskableEnum` interface for your enum. You can define a `toMaskKey` method to specify custom keys for each enum value. For example:
 
 ```php
 public function toMaskKey(): string
@@ -224,15 +318,11 @@ public function toMaskKey(): string
 }
 ```
 
-With this approach, the `toArray` method in `EnumBitmaskHandler` can utilize the `toMaskKey` method to generate a more
-descriptive and meaningful array representation of the current mask.
-
+With this approach, the `toArray` method in `EnumBitmaskHandler` can utilize the `toMaskKey` method to generate a more descriptive and meaningful array representation of the current mask.
 
 ---
 
-## Here Extra Bitmask Class Methods
-
----
+### 6. Additional Bitmask Class Methods
 
 #### **1. Exposing BitmaskConverter Methods**
 
@@ -332,7 +422,10 @@ descriptive and meaningful array representation of the current mask.
   ```
 
 ---
+
 ## Testing
+
+You can run the package's test suite using Composer:
 
 ```bash
 composer test
@@ -345,7 +438,6 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
 
 ## Credits
 

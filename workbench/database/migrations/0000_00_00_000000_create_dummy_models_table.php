@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('dummy_models', function (Blueprint $table) {
             $table->id();
             $table->integer('permissions')->nullable();
+            $table->integer('archive_data_flag')->nullable();
             $table->integer('flags')->nullable();
             $table->timestamps();
         });
