@@ -29,15 +29,9 @@ use InvalidArgumentException;
  */
 trait HasBitmask
 {
-
-
     /**
      * Scope a query to include records where a specific flag is set on a specified column.
      *
-     * @param Builder $query
-     * @param string $column
-     * @param int|BackedEnum $flag
-     * @return Builder
      *
      * @throws InvalidArgumentException
      */
@@ -52,14 +46,12 @@ trait HasBitmask
     /**
      * Validate that the provided column is a defined bitmask column.
      *
-     * @param string $column
-     * @return void
      *
      * @throws InvalidArgumentException
      */
     protected function validateColumn(string $column): void
     {
-        if (!array_key_exists($column, $this->getBitmaskColumns())) {
+        if (! array_key_exists($column, $this->getBitmaskColumns())) {
             throw new InvalidArgumentException("Column '{$column}' is not a defined bitmask column.");
         }
     }
@@ -67,9 +59,6 @@ trait HasBitmask
     /**
      * Retrieve the integer value of a flag, considering its associated Enum if any.
      *
-     * @param string $column
-     * @param int|BackedEnum $flag
-     * @return int
      *
      * @throws InvalidArgumentException
      */
@@ -78,14 +67,14 @@ trait HasBitmask
         if ($flag instanceof BackedEnum) {
             // If the column has an associated Enum, ensure the flag belongs to it
             $enumClass = $this->getBitmaskColumns()[$column] ?? null;
-            if ($enumClass && !($flag instanceof $enumClass)) {
+            if ($enumClass && ! ($flag instanceof $enumClass)) {
                 throw new InvalidArgumentException("Flag does not match the Enum associated with column '{$column}'.");
             }
 
             return $flag->value;
         }
 
-        if (!is_int($flag)) {
+        if (! is_int($flag)) {
             throw new InvalidArgumentException('Bitmask flag must be an integer or a backed enum.');
         }
 
@@ -95,10 +84,7 @@ trait HasBitmask
     /**
      * Scope a query to include records where any of the specified flags are set on a specified column.
      *
-     * @param Builder $query
-     * @param string $column
-     * @param array<int|BackedEnum> $flags
-     * @return Builder
+     * @param  array<int|BackedEnum>  $flags
      *
      * @throws InvalidArgumentException
      */
@@ -114,15 +100,13 @@ trait HasBitmask
     /**
      * Validate that the provided flags are integers or backed Enums.
      *
-     * @param array $flags
-     * @return void
      *
      * @throws InvalidArgumentException
      */
     protected function validateFlags(array $flags): void
     {
         foreach ($flags as $flag) {
-            if (!is_int($flag) && !($flag instanceof BackedEnum)) {
+            if (! is_int($flag) && ! ($flag instanceof BackedEnum)) {
                 throw new InvalidArgumentException('Bitmask flags must be integers or backed enums.');
             }
         }
@@ -131,8 +115,7 @@ trait HasBitmask
     /**
      * Calculate the mask by summing the flag values.
      *
-     * @param array<int|BackedEnum> $flags
-     * @return int
+     * @param  array<int|BackedEnum>  $flags
      */
     protected function calculateMask(array $flags): int
     {
@@ -144,10 +127,7 @@ trait HasBitmask
     /**
      * Scope a query to include records where all of the specified flags are set on a specified column.
      *
-     * @param Builder $query
-     * @param string $column
-     * @param array<int|BackedEnum> $flags
-     * @return Builder
+     * @param  array<int|BackedEnum>  $flags
      *
      * @throws InvalidArgumentException
      */
@@ -163,10 +143,6 @@ trait HasBitmask
     /**
      * Scope a query to include records where a specific flag is NOT set on a specified column.
      *
-     * @param Builder $query
-     * @param string $column
-     * @param int|BackedEnum $flag
-     * @return Builder
      *
      * @throws InvalidArgumentException
      */
