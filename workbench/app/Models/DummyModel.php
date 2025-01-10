@@ -17,12 +17,12 @@ class DummyModel extends Model
 
     protected static function newFactory()
     {
-        return new DummyModelFactory();
+        return new DummyModelFactory;
     }
 
     protected $table = 'dummy_models';
 
-    protected $fillable = ['permissions', 'flags','archive_data_flag'];
+    protected $fillable = ['permissions', 'flags', 'archive_data_flag'];
 
     protected $casts = [
         'permissions' => EnumBitmaskCast::class.':'.Permissions::class,
