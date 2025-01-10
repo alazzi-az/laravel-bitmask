@@ -7,25 +7,14 @@ use Illuminate\Database\Eloquent\Builder;
 use InvalidArgumentException;
 
 /**
- * Trait Bitmaskable
+ * Trait HasBitmask
  *
  * Provides Eloquent query scopes for bitmask operations on multiple columns.
  *
- * Usage:
- * 1. Define the $bitmaskColumns property in your model.
- * 2. Use the provided scope methods to perform queries.
- *
- * Example:
- *
- * class Archive extends Model
- * {
- *     use Bitmaskable;
- *
- *     protected array $bitmaskColumns = [
- *         'archive_data_flag' => ArchiveDataFlag::class,
- *         'user_permissions_flag' => UserPermissionsFlag::class,
- *     ];
- * }
+ * @method static Builder whereHasFlag(string $column, int|BackedEnum $flag)
+ * @method static Builder whereHasAnyFlags(string $column, array $flags)
+ * @method static Builder whereHasAllFlags(string $column, array $flags)
+ * @method static Builder whereHasNoFlag(string $column, int|BackedEnum $flag)
  */
 trait HasBitmask
 {
