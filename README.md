@@ -1,6 +1,3 @@
-Certainly! Below is the **updated README** for your `laravel-bitmask` package, incorporating the renamed trait `HasBitmask` and ensuring all references and usage examples align with the latest changes. This updated documentation adheres to best practices, provides clear instructions, and showcases the enhanced functionality of your package.
-
----
 
 # Laravel Bitmask
 
